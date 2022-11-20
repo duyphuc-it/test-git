@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/b700018786.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <div class="slide-container">
+        <div class="slide-item active">
+            <img src="https://salt.tikicdn.com/ts/banner/99/68/96/fcccbcda4a8b40194dbd3697e41f88e6.png">
+        </div>
+        <div class="slide-item">
+            <img src="https://salt.tikicdn.com/ts/banner/d0/81/10/5dc52b9b4954d8097d45ccf9647fd63f.png">
+        </div>
+        <div class="slide-item">
+            <img src="https://salt.tikicdn.com/ts/banner/8f/0c/1f/0ccc95c52ebb066ad2011725f93390f7.png">
+        </div>
+        <div class="prev" onclick="changeSlide('prev')">
+            <i class="fa-solid fa-chevron-left"></i>
+        </div>
+
+        ok
+        ok
+        <div class="next" onclick="changeSlide('next')">
+            <i class="fa-solid fa-chevron-right"></i>
+        </div>
+        <div class="dots">
+        </div>
+    </div>
+    <script>
+        let slides = document.querySelectorAll(".slide-item");
+        let dotContainer = document.querySelector(".dots");
+        slides.forEach((item, index) => {
+            item.style.transform = `translateX(${index * 100}%)`
+            let dotElement = document.createElement("div");
+            dotElement.classList.add(`dot`);
+            dotElement.classList.add(`dot-item-${index}`);
+            dotElement.setAttribute('onclick', `handleClickForceChangeSlide(${index}, this)`)
+            if (index == 0) dotElement.classList.add("active");
+            dotContainer.appendChild(dotElement);
+        })
+
+        let currentSlide = 0;
+        let maxSlide = slides.length - 1;
+        function changeSlide(type) {
+            if (type === "next") {
+                handleChangeSlide(currentSlide === maxSlide ? currentSlide = 0 : currentSlide + 1)
+            } else {
+                handleChangeSlide(currentSlide === 0 ? currentSlide = maxSlide : currentSlide - 1)
+            }
+        }
+        function handleClickForceChangeSlide(slideActive, that) {
+            handleChangeSlide(slideActive);
+        }
+        function handleChangeSlide(currentSlide) {
+            document.querySelector(".slide-item.active").classList.remove("active");
+            document.querySelector(".dot.active").classList.remove("active");
+            slides.forEach((item, index) => {
+                item.style.transform = `translateX(${(index - currentSlide) * 100}%)`
+                if (index == currentSlide) {
+                    item.classList.add("active");
+                    dotContainer.querySelector(`.dot-item-${index}`).classList.add("active");
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>
